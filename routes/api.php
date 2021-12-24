@@ -114,6 +114,7 @@ Route::middleware(['lang'])->prefix('admin')->name('admin.')->group(function () 
             Route::post('customers', [CustomerController::class, 'customers']);
             Route::post('hospitals', [CustomerController::class, 'hospitals']);
             Route::post('customer_names', [CustomerController::class, 'customerNames']);
+            Route::post('department', [CustomerController::class, 'department']);
             Route::post('city', [CustomerController::class, 'city']);
             Route::post('county', [CustomerController::class, 'county']);
             Route::post('phone', [CustomerController::class, 'phone']);

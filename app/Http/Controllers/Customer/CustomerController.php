@@ -118,4 +118,13 @@ class CustomerController extends Controller
             ->withMessage(__('message.common.search.success'))
             ->build();
     }
+
+    public function department(): Response
+    {
+        return ResponseBuilder::asSuccess(ApiCode::HTTP_OK)
+            ->withHttpCode(ApiCode::HTTP_OK)
+            ->withData(Customer::getDepartmentList())
+            ->withMessage(__('message.common.search.success'))
+            ->build();
+    }
 }

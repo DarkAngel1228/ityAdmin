@@ -90,6 +90,14 @@ class Customer extends Model
             ->select(['county'])
             ->get();
     }
+    public function getDepartmentList()
+    {
+        return Customer::where('is_delete', 0)
+            ->groupBy("department")
+            ->select(['department'])
+            ->get();
+    }
+
     public function getPhoneList()
     {
         return Record::where('is_delete', 0)
