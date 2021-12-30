@@ -39,6 +39,9 @@ class Customer extends Model
 
     public function getList(array $validated): array
     {
+        if ($validated['offset']) {
+            $validated['offset'] = ($validated['offset'] - 1) * $validated['limit'];
+        }
         $list = Customer::where('is_delete', 0)
             ->when($validated['search_data'] ?? null, function ($query) use ($validated) {
                 return $query->whereRaw("concat(IFNULL(city,''),IFNULL(county,''),IFNULL(hospital,''),IFNULL(department,''),IFNULL(customer_name,'')) like ?",["%" . $validated['search_data'] . "%"]);
@@ -47,11 +50,20 @@ class Customer extends Model
             ->offset($validated['offset'])
             ->get();
 
-        $total = count($list);
+        $total = self::getTotal($validated);
         return [
             'customers' => $list,
             'total' => $total
         ];
+    }
+
+    public function getTotal(array $validated)
+    {
+        return Customer::where('is_delete', 0)
+            ->when($validated['search_data'] ?? null, function ($query) use ($validated) {
+                return $query->whereRaw("concat(IFNULL(city,''),IFNULL(county,''),IFNULL(hospital,''),IFNULL(department,''),IFNULL(customer_name,'')) like ?",["%" . $validated['search_data'] . "%"]);
+            })
+            ->count();
     }
 
     public function getCityList()
