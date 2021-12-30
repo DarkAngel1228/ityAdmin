@@ -24,6 +24,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::options('{all}', function () {
+    return 'options is ok';
+});
+
 Route::middleware([])->namespace('Home')->name('home.')->group(function () {
 });
 
@@ -117,12 +121,10 @@ Route::middleware(['lang'])->prefix('admin')->name('admin.')->group(function () 
             Route::post('department', [CustomerController::class, 'department']);
             Route::post('city', [CustomerController::class, 'city']);
             Route::post('county', [CustomerController::class, 'county']);
-            Route::post('phone', [CustomerController::class, 'phone']);
-            Route::post('produce', [CustomerController::class, 'produce']);
-            Route::post('tracker', [CustomerController::class, 'tracker']);
-            Route::post('bill', [CustomerController::class, 'bill']);
-            Route::post('channel_business', [CustomerController::class, 'channelBusiness']);
-            Route::post('record', [CustomerController::class, 'record']);
+            Route::post('create_customer', [CustomerController::class, 'createCustomer']);
+            Route::post('customer/{customerId}', [CustomerController::class, 'getCustomerById']);
+            Route::post('update_customer', [CustomerController::class, 'updateCustomer']);
+            Route::post('delete_customer/{customerId}', [CustomerController::class, 'deleteCustomer']);
         });
     });
 });

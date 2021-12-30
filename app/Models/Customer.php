@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
+use Ramsey\Uuid\Type\Integer;
+
 /**
  * App\Models\Customer
  *
@@ -23,56 +26,32 @@ class Customer extends Model
 
     protected static $logUnguarded = true;
 
+    const CREATED_AT = null;
+    const UPDATED_AT = null;
+
     protected $table = 'customers';
 
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'city', 'county', 'hospital', 'department', 'customer_name'
+        'city', 'county', 'hospital', 'department', 'customer_name', 'phone', 'information', 'demand', 'visit', 'channel_business'
     ];
 
     public function getList(array $validated): array
     {
         $list = Customer::where('is_delete', 0)
-            ->when($validated['customer_name'] ?? null, function ($query) use ($validated) {
-                return $query->where('customer_name', 'like', '%' . $validated['customer_name'] . '%');
-            })
-            ->when($validated['hospital'] ?? null, function ($query) use ($validated) {
-                return $query->where('hospital', 'like', '%' . $validated['hospital'] . '%');
+            ->when($validated['search_data'] ?? null, function ($query) use ($validated) {
+                return $query->whereRaw("concat(IFNULL(city,''),IFNULL(county,''),IFNULL(hospital,''),IFNULL(department,''),IFNULL(customer_name,'')) like ?",["%" . $validated['search_data'] . "%"]);
             })
             ->limit($validated['limit'])
             ->offset($validated['offset'])
-            ->get()->toArray();
-        $idData = array_column($list, 'id');
-        $record = Record::where('is_delete', 0)->whereIn('customer_id', $idData)->get()->toArray();
+            ->get();
 
-        foreach ($list as $key => $info) {
-            foreach ($record as $a) {
-                if ($info['id'] == $a['customer_id']) {
-                    $list[$key]['child'][] = $a;
-                }
-            }
-        }
         $total = count($list);
         return [
             'customers' => $list,
             'total' => $total
         ];
-    }
-
-    public function getHospitalList()
-    {
-        return Customer::where('is_delete', 0)
-            ->groupBy("hospital")
-            ->select(['hospital'])
-            ->get();
-    }
-    public function getCustomerNameList()
-    {
-        return Customer::where('is_delete', 0)
-            ->groupBy("customer_name")
-            ->select(['customer_name'])
-            ->get();
     }
 
     public function getCityList()
@@ -90,6 +69,15 @@ class Customer extends Model
             ->select(['county'])
             ->get();
     }
+
+    public function getHospitalList()
+    {
+        return Customer::where('is_delete', 0)
+            ->groupBy("hospital")
+            ->select(['hospital'])
+            ->get();
+    }
+
     public function getDepartmentList()
     {
         return Customer::where('is_delete', 0)
@@ -98,47 +86,37 @@ class Customer extends Model
             ->get();
     }
 
-    public function getPhoneList()
+    public function getCustomerNameList()
     {
-        return Record::where('is_delete', 0)
-            ->groupBy("phone")
-            ->select(['phone'])
-            ->get();
-    }
-    public function getProduceList()
-    {
-        return Record::where('is_delete', 0)
-            ->groupBy("produce")
-            ->select(['produce'])
-            ->get();
-    }
-    public function getTrackerList()
-    {
-        return Record::where('is_delete', 0)
-            ->groupBy("tracker")
-            ->select(['tracker'])
-            ->get();
-    }
-    public function getBillList()
-    {
-        return Record::where('is_delete', 0)
-            ->groupBy("bill")
-            ->select(['bill'])
-            ->get();
-    }
-    public function getChannelBusinessList()
-    {
-        return Record::where('is_delete', 0)
-            ->groupBy("channel_business")
-            ->select(['channel_business'])
+        return Customer::where('is_delete', 0)
+            ->groupBy("customer_name")
+            ->select(['customer_name'])
             ->get();
     }
 
-    public function getRecordList()
+    public function createCustomer(array $attributes = [])
     {
-        return Record::where('is_delete', 0)
-            ->groupBy("record")
-            ->select(['record'])
-            ->get();
+        $customerModel = new Customer($attributes);
+        $customerModel->save();
+        return [];
     }
+
+    public function updateCustomer(array $attributes = [])
+    {
+        $editArray = [$attributes['column'] => $attributes['edit_value']];
+        $customerInfo = Customer::where('id', $attributes['id'])->first();
+        $customerInfo->fill($editArray);
+        $customerInfo->save();
+        return [];
+    }
+    public function deleteCustomer(int $id)
+    {
+        $customerInfo = Customer::where('id', $id)->first();
+        $customerInfo->is_delete = 1;
+        $customerInfo->save();
+        return [];
+    }
+
+
+
 }

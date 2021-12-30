@@ -2,11 +2,10 @@
 
 namespace App\Http\Requests\Customer;
 
-use App\Http\Requests\GetListRequest as CommonRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class GetListRequest extends FormRequest
+class UpdateCustomerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +24,23 @@ class GetListRequest extends FormRequest
      */
     public function rules()
     {
-        return array_merge((new CommonRequest())->rules(), [
-            'search_data' => ['nullable', 'string', 'between:1,60',],
-        ]);
+        return [
+            'id' => ['required', 'integer'],
+            'column' => ['required'],
+            'edit_value' => ['required'],
+        ];
+    }
+
+    /**
+     * 获取验证错误的自定义属性。
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+
+        ];
     }
 
     /**
@@ -35,11 +48,10 @@ class GetListRequest extends FormRequest
      *
      * @return array
      */
-    public function attributes()
+    public function messages()
     {
-        return array_merge((new CommonRequest())->attributes(), [
-            'customer_name' => __('message.admin.name'),
-            'hospital' => __('message.admin.name'),
-        ]);
+        return [
+
+        ];
     }
 }
