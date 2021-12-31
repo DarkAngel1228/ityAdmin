@@ -125,6 +125,14 @@ Route::middleware(['lang'])->prefix('admin')->name('admin.')->group(function () 
             Route::post('customer/{customerId}', [CustomerController::class, 'getCustomerById']);
             Route::post('update_customer', [CustomerController::class, 'updateCustomer']);
             Route::post('delete_customer/{customerId}', [CustomerController::class, 'deleteCustomer']);
+            // 渠道商
+            Route::post('channel_business', [CustomerController::class, 'channelBusiness']);
+            Route::post('company_list', [CustomerController::class, 'companyList']);
+            Route::post('produce_list', [CustomerController::class, 'produceList']);
+            Route::post('channel_business_list', [CustomerController::class, 'channelBusinessList']);
+            Route::post('create_channel_business', [CustomerController::class, 'createChannelBusiness']);
+            Route::post('update_channel_business', [CustomerController::class, 'updateChannelBusiness']);
+            Route::post('delete_channel_business/{id}', [CustomerController::class, 'deleteChannelBusiness']);
         });
     });
 });
