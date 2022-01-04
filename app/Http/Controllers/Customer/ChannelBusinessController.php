@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Customer;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Customer\CreateChannelBusinessRequest;
 use App\Http\Requests\Customer\UpdateCustomerRequest;
 use App\Http\Requests\Customer\GetListRequest;
 use App\Http\Requests\Customer\CreateCustomerAndRecordRequest;
@@ -63,7 +64,7 @@ class ChannelBusinessController extends Controller
             ->build();
     }
 
-    public function createChannelBusiness(CreateCustomerAndRecordRequest $request): Response
+    public function createChannelBusiness(CreateChannelBusinessRequest $request): Response
     {
         $validated = $request->validated();
         return ResponseBuilder::asSuccess(ApiCode::HTTP_OK)

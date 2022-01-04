@@ -66,40 +66,47 @@ class Customer extends Model
     public function getCityList()
     {
         return Customer::where('is_delete', 0)
-            ->groupBy("city")
             ->select(['city'])
+            ->distinct()
             ->get();
     }
 
     public function getCountyList()
     {
         return Customer::where('is_delete', 0)
-            ->groupBy("county")
             ->select(['county'])
+            ->distinct()
             ->get();
     }
 
     public function getHospitalList()
     {
         return Customer::where('is_delete', 0)
-            ->groupBy("hospital")
             ->select(['hospital'])
+            ->distinct()
             ->get();
     }
 
     public function getDepartmentList()
     {
         return Customer::where('is_delete', 0)
-            ->groupBy("department")
             ->select(['department'])
+            ->distinct()
             ->get();
     }
 
     public function getCustomerNameList()
     {
         return Customer::where('is_delete', 0)
-            ->groupBy("customer_name")
             ->select(['customer_name'])
+            ->distinct()
+            ->get();
+    }
+    public function getChannelBusinessList()
+    {
+        return Customer::where('is_delete', 0)
+            ->select(['channel_business'])
+            ->distinct()
             ->get();
     }
 

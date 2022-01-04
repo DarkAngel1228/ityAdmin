@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Customer\ChannelBusinessController;
 use App\Http\Controllers\Customer\CustomerController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,10 +24,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::options('{all}', function () {
-    return 'options is ok';
-});
 
 Route::middleware([])->namespace('Home')->name('home.')->group(function () {
 });
@@ -121,18 +118,18 @@ Route::middleware(['lang'])->prefix('admin')->name('admin.')->group(function () 
             Route::post('department', [CustomerController::class, 'department']);
             Route::post('city', [CustomerController::class, 'city']);
             Route::post('county', [CustomerController::class, 'county']);
+            Route::post('channel_business_list', [CustomerController::class, 'channelBusiness']);
             Route::post('create_customer', [CustomerController::class, 'createCustomer']);
             Route::post('customer/{customerId}', [CustomerController::class, 'getCustomerById']);
             Route::post('update_customer', [CustomerController::class, 'updateCustomer']);
             Route::post('delete_customer/{customerId}', [CustomerController::class, 'deleteCustomer']);
             // 渠道商
-            Route::post('channel_business', [CustomerController::class, 'channelBusiness']);
-            Route::post('company_list', [CustomerController::class, 'companyList']);
-            Route::post('produce_list', [CustomerController::class, 'produceList']);
-            Route::post('channel_business_list', [CustomerController::class, 'channelBusinessList']);
-            Route::post('create_channel_business', [CustomerController::class, 'createChannelBusiness']);
-            Route::post('update_channel_business', [CustomerController::class, 'updateChannelBusiness']);
-            Route::post('delete_channel_business/{id}', [CustomerController::class, 'deleteChannelBusiness']);
+            Route::post('channel_business', [ChannelBusinessController::class, 'channelBusiness']);
+            Route::post('company_list', [ChannelBusinessController::class, 'companyList']);
+            Route::post('produce_list', [ChannelBusinessController::class, 'produceList']);
+            Route::post('create_channel_business', [ChannelBusinessController::class, 'createChannelBusiness']);
+            Route::post('update_channel_business', [ChannelBusinessController::class, 'updateChannelBusiness']);
+            Route::post('delete_channel_business/{id}', [ChannelBusinessController::class, 'deleteChannelBusiness']);
         });
     });
 });

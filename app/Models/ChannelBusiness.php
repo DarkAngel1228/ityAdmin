@@ -45,7 +45,7 @@ class ChannelBusiness extends Model
 
         $total = self::getTotal($validated);
         return [
-            'customers' => $list,
+            'channel_business' => $list,
             'total' => $total
         ];
     }
@@ -62,24 +62,24 @@ class ChannelBusiness extends Model
     public function getCompanyList()
     {
         return ChannelBusiness::where('is_delete', 0)
-            ->groupBy("company")
             ->select(['company'])
+            ->distinct()
             ->get();
     }
 
     public function getProduceList()
     {
         return ChannelBusiness::where('is_delete', 0)
-            ->groupBy("produce")
             ->select(['produce'])
+            ->distinct()
             ->get();
     }
 
     public function getChannelBusinessList()
     {
         return ChannelBusiness::where('is_delete', 0)
-            ->groupBy("channel_business")
             ->select(['channel_business'])
+            ->distinct()
             ->get();
     }
 

@@ -79,6 +79,14 @@ class CustomerController extends Controller
             ->withMessage(__('message.common.search.success'))
             ->build();
     }
+    public function channelBusiness(): Response
+    {
+        return ResponseBuilder::asSuccess(ApiCode::HTTP_OK)
+            ->withHttpCode(ApiCode::HTTP_OK)
+            ->withData(Customer::getChannelBusinessList())
+            ->withMessage(__('message.common.search.success'))
+            ->build();
+    }
 
     public function createCustomer(CreateCustomerAndRecordRequest $request): Response
     {
