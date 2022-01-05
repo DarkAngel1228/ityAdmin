@@ -25,12 +25,12 @@ class CreateCustomerAndRecordRequest extends FormRequest
     public function rules()
     {
         return [
-            'customer_name' => ['required', 'string', 'unique:customers', 'between:1,20'],
+            'customer_name' => ['nullable', 'string', 'unique:customers', 'between:1,20'],
             'city' => ['required', 'string', 'between:1,50'],
             'county' => ['required', 'string', 'between:1,50'],
             'hospital' => ['required', 'string', 'between:1,100'],
-            'department' => ['required', 'string', 'between:1,100'],
-            'phone' => ['required', 'string', 'between:5,20'],
+            'department' => ['nullable', 'string', 'between:1,100'],
+            'phone' => ['nullable', 'string', 'between:5,20'],
             'information' => ['nullable', 'string', 'between:1,255'],
             'demand' => ['nullable', 'string', 'between:1,255'],
             'visit' => ['nullable', 'string', 'between:1,1000'],
